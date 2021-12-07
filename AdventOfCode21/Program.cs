@@ -1,5 +1,4 @@
 ﻿using AoCHelper;
-using System;
 
 namespace AdventOfCode21
 {
