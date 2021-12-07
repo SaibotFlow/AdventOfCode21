@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31727.386
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{4F8E11F1-E66C-420B-8374-1F4B3B5BE887}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode21", "AdventOfCode21\AdventOfCode21.csproj", "{54B18E2B-7E9F-4104-9616-A8116486AD91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4F8E11F1-E66C-420B-8374-1F4B3B5BE887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F8E11F1-E66C-420B-8374-1F4B3B5BE887}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F8E11F1-E66C-420B-8374-1F4B3B5BE887}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F8E11F1-E66C-420B-8374-1F4B3B5BE887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54B18E2B-7E9F-4104-9616-A8116486AD91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54B18E2B-7E9F-4104-9616-A8116486AD91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54B18E2B-7E9F-4104-9616-A8116486AD91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54B18E2B-7E9F-4104-9616-A8116486AD91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
