@@ -38,12 +38,65 @@ namespace AdventOfCode21
         }
         public override ValueTask<string> Solve_1()
         {
-            throw new NotImplementedException();
+
+            var bingoBoards = this.Boards.Select(x => new BingoBoard(x)).ToList();
+            foreach (var number in WinningNumbers)
+            {
+                foreach (var bingoBoard in bingoBoards)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        for (int j = 0; j < 5; j++)
+                        {
+                            if (bingoBoard.Board[i, j] == number)
+                            {
+                                if (bingoBoard.MarkHit(i, j))
+                                {
+                                    return new((bingoBoard.Sum() * number).ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return new("");
+        }
+
+        internal class BingoBoard
+        {
+            public int[,] Board;
+            public SortedList<int, int> RowMarks;
+            public SortedList<int, int> ColumnMarks;
+
+            public BingoBoard(int[,] Board)
+            {
+                this.Board = Board;
+                RowMarks = new SortedList<int, int>() { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } };
+                ColumnMarks = new SortedList<int, int>() { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 } };
+            }
+            public bool MarkHit(int rowIndex, int columnIndex)
+            {
+                this.Board[rowIndex, columnIndex] = -1;
+                this.RowMarks[rowIndex]++;
+                this.ColumnMarks[columnIndex]++;
+                if (RowMarks.Values.Contains(5) || ColumnMarks.Values.Contains(5))
+                    return true;
+                return false;
+            }
+            public int Sum()
+            {
+                return this.Board.Cast<int>().Where(x => x > -1).ToArray().Sum();
+            }
         }
 
         public override ValueTask<string> Solve_2()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new("");
         }
+
+
+
+
     }
 }
