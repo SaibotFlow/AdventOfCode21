@@ -1,7 +1,7 @@
 ﻿using AoCHelper;
 using System;
 
-namespace ConsoleApp1
+namespace AdventOfCode21
 {
     class Program
     {
