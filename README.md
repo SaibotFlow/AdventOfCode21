@@ -2,7 +2,8 @@
 My personal solution for the Advent of Code puzzle 2021.
 
 I do not put focus on speed.
-I just wanted to solve the task every day and have some fun :-)
+I just wanted to solve the tasks and have some fun :-)
+
 
 ## Info
 To solve the puzzles I use the project template AoCHelper from eduherminio (https://github.com/eduherminio/AdventOfCode.Template).  
