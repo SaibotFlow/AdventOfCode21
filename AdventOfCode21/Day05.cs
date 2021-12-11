@@ -69,7 +69,7 @@ namespace AdventOfCode21
 
         public override ValueTask<string> Solve_2()
         {
-            throw new NotImplementedException();
+            return new("");
         }
     }
 }
