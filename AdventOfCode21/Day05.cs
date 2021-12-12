@@ -1,5 +1,6 @@
 ﻿using AoCHelper;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,55 +14,82 @@ namespace AdventOfCode21
         public List<KeyValuePair<int, int>> _StartPoints = new List<KeyValuePair<int, int>>();
         public List<KeyValuePair<int, int>> _EndPoints = new List<KeyValuePair<int, int>>();
 
+        public Line[] Lines;
+
+        public class Line
+        {
+            public int X1;
+            public int X2;
+            public int Y1;
+            public int Y2;
+
+            public bool Check(bool withDiagonales = false)
+            {
+                if (!withDiagonales)
+                    return X1 == X2 || Y1 == Y2;
+                else
+                    return true;
+            }
+
+            public int Max()
+            {
+                return new[] { X1, X2, Y1, Y2 }.Max();
+            }
+
+            public int[,] Mark(int[,] map)
+            {
+
+                var points = new List<KeyValuePair<int, int>>();
+                /*
+                 * MathSign e.g X1,X2
+                 * if result > 0 it returns 1  --> X2 is bigger and X1 so increase X1 by 1
+                 * if result < 0 it returns -1 --> X2 is lower than X1 so descrease X1 by 1
+                 * if result = 0 it returns 0 --> X2 = X1 do nothing
+                 */
+                var xInkcrement = Math.Sign(X2 - X1);
+                var yIncrement = Math.Sign(Y2 - Y1);
+                // Dont forget to include the border points. Use the increment.
+                for (int x = X1, y = Y1; x != X2+xInkcrement || y !=Y2+yIncrement; x+=xInkcrement, y+=yIncrement)
+                {
+                    points.Add(new KeyValuePair<int, int>(x, y));
+                }
+                foreach (var point in points) map[point.Key, point.Value]++;
+                return map;
+            }
+
+            public override string ToString()
+            {
+                return "(" + X1 + "," + Y1 + ")(" + X2 + "," + Y2 + ")";
+            }
+
+        }
 
         public Day05()
         {
-            File.ReadAllLines(InputFilePath).ToList().ForEach(line =>
+            Lines = File.ReadAllLines(InputFilePath).Select(item =>
             {
-                var splitted = line.Split("->");
+                var splitted = item.Split("->");
                 var start = splitted[0].Trim().Split(",");
                 var end = splitted[1].Trim().Split(",");
-                _StartPoints.Add(new KeyValuePair<int,int>(Convert.ToInt32(start[0]),Convert.ToInt32(start[1])));
-                _EndPoints.Add(new KeyValuePair<int, int>(Convert.ToInt32(end[0]), Convert.ToInt32(end[1])));
-
-            });
+                return new Line()
+                {
+                    X1 = int.Parse(start[0]),
+                    Y1 = int.Parse(start[1]),
+                    X2 = int.Parse(end[0]),
+                    Y2 = int.Parse(end[1])
+                };
+            }).ToArray();
         }
         public override ValueTask<string> Solve_1()
         {
-            var filteredStarts = _StartPoints.Where((item, index) => item.Key == _EndPoints[index].Key || item.Value == _EndPoints[index].Value).ToList();
-            var filteredEnds = _EndPoints.Where((item, index) => item.Key == _StartPoints[index].Key || item.Value == _StartPoints[index].Value).ToList();
-            int maxStarts = filteredStarts.Max(s => s.Key > s.Value ? s.Key : s.Value);
-            int maxEnds = filteredEnds.Max(s => s.Key > s.Value ? s.Key : s.Value);
-            int bound = maxStarts > maxEnds ? maxStarts : maxEnds;
-            int[,] table = new int[bound+1, bound+1];
-            for (int i = 0; i < filteredStarts.Count; i++)
-            {
-                var start = filteredStarts[i];
-                var end = filteredEnds[i];
-                bool isKeyEquals = start.Key == end.Key ? true: false;
-                var loopStart =0;
-                var loopEnd = 0;
-                if (!isKeyEquals)
-                {
-                    loopStart = start.Key < end.Key ? start.Key : end.Key;
-                    loopEnd = start.Key < end.Key ? end.Key : start.Key;
-                }
-                else
-                {
-                    loopStart = start.Value < end.Value ? start.Value : end.Value;
-                    loopEnd = start.Value < end.Value ? end.Value : start.Value;
-                }
-                string blub = "";
-                for (int j = loopStart; j <= loopEnd; j++)
-                {
-                    _= isKeyEquals ? table[start.Key,j]++ : table[j, start.Value]++;
-                    _ = isKeyEquals ? blub += start.Key + "," + j + Environment.NewLine : blub += j + "," + start.Value + Environment.NewLine;
-                }
-            }
+            var filteredLines = Lines.Where(l => l.Check(false)).ToArray();
+            var bound = filteredLines.Max(l => l.Max());
+            int[,] map = new int[bound + 1, bound + 1];
+            foreach (var line in filteredLines) line.Mark(map);
             var count = 0;
-            foreach (var marker in table)
+            foreach (var marker in map)
             {
-                if (marker > 1)
+                if (marker >= 2)
                     count++;
             }
             return new(count.ToString());
@@ -69,7 +97,17 @@ namespace AdventOfCode21
 
         public override ValueTask<string> Solve_2()
         {
-            return new("");
+            var filteredLines = Lines.Where(l => l.Check(true)).ToArray();
+            var bound = filteredLines.Max(l => l.Max());
+            int[,] map = new int[bound + 1, bound + 1];
+            foreach (var line in filteredLines) line.Mark(map);
+            var count = 0;
+            foreach (var marker in map)
+            {
+                if (marker >= 2)
+                    count++;
+            }
+            return new(count.ToString());
         }
     }
 }
